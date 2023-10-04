@@ -1,0 +1,81 @@
+Das Vorgehen folgt dem Youtube-Video-Tutorial "Python API Tutorial (Deutsch) | 🚀 Für Anfängerinnen und Anfänger | NASA-API" 
+unter der Adresse "https://www.youtube.com/watch?v=fOPWZytYsFM" (04.10.2023)
+auf Youtube hochgeladen am 21.05.2021 vom Account "Programmieren lernen mit Chris 🚀" -> Account-Adresse "https://www.youtube.com/@Programmieren"
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Programmieren in Visual Studio Code:
+
+Erstelle ein neues Python-File
+->bspw. "nasa.py"
+Installiere via Terminal das Python-Modul "requests" 
+->pip3 install requests
+Importiere das Modul "requests" im Python-Script
+->import requests
+Importiere das Modul "json" im Python-Script
+->import json
+(Teste auf Fehler im Script-> Run Python File)
+
+Stelle Anfrage an den NASA-Server:
+Halte Einsicht in die API-Dokumentation des NASA-Servers zu EONET
+->https://api.nasa.gov/ ->https://eonet.gsfc.nasa.gov/docs/v2.1
+
+Halte Rückblick auf Beispiel-Anfragen mit Beispiel-Parametern
+->bspw. Example: https://eonet.gsfc.nasa.gov/api/v2.1/events?limit=5&days=20&source=InciWeb&status=open
+
+Übernehme Parameter für Python-Script und beschränke die Ausgabe nach eigenem Interesse (Mengenwert)
+->bspw. limit = 500
+        days  = 365
+
+Übernehme Beispiel-Anfrage als Anfrage für Python-Script als Variable url und eliminiere unnötige Angaben (->&source=InciWeb&status=open)
+->bspw. url = "https://eonet.gsfc.nasa.gov/api/v2.1/events?limit=5&days=20"
+
+Formatiere die Anfrage für gesuchte Parameter (bspw. limit = 500, days = 365) ->Formatiere den String der Anfrage mit einem f-> Ersetze Werte mit {gesuchter parameter}
+->bspw. url = f"https://eonet.gsfc.nasa.gov/api/v2.1/events?limit={limit}&days={days}"
+(Teste auf Fehler im Script-> Run Python File)
+
+Erstelle die Anfrage an den NASA-Server im Python-Script als Variable r
+r = requests.get(url)
+
+Definiere Ergebnis als lesbares json-Format als Variable events_data
+events_data = r.json()
+
+Speichere Ergebnis in eigener Datei 
+1. Zeile -> öffne neue Datei (with open)-> gib Datei einen Namen ('events.json') -> gib Recht für Schreiben/Write ('w') -> öffne Datei unter Namen (f)
+2. Zeile -> Greif auf Datei zu und befehle Schreiben/Write (f.write) -> Greif auf Json-Modul zu und befehle dumps für ablegen in Datei (json.dumps) ->Definiere Daten für dumps; welche Daten? (events_data); rücke Daten auf bspw. 4 ein (indent = 4)
+->bspw. with open('events.json','w') as f:
+             f.write(json.dumps(events_data, indent = 4))
+Run Python File -> Neue Datei wird erstellt mit Ergebnissen
+
+Gebe in Python-Script Liste aus Objektbereich als Variable events_list aus identifizierten Bereichen in JSON-Datei (bspw.'events')
+->bspw. events_list = events_data['events']
+
+Gebe einzelne Objekte aus (bspw. Events nach 'title') 
+1. Zeile-> für alle Events (for event) -> in Liste (in events_list)
+2. Zeile-> mache Ausgabe (print(event['title'])) 
+->bspw. for event in events_list:
+            print(event['title'])
+
+Run Python File
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Vollständiges Python-Script:
+
+import requests
+import json
+
+limit = 500
+days = 365
+
+url = f"https://eonet.gsfc.nasa.gov/api/v2.1/events?limit={limit}&days={days}"
+r = requests.get(url)
+events_data = r.json()
+
+with open('events.json','w') as f:
+     f.write(json.dumps(events_data, indent=4))
+    
+events_list = events_data['events']
+
+for event in events_list:
+    print(event['title'])
+
+
