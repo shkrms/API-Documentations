@@ -1,1 +1,55 @@
-Das Vorgehen folgt 
+Das Vorgehen folgt dem Jupyter Notebook "OpenAlex_API.ipynb"
+unter der Adresse "https://github.com/ub-unibe-ch/ds-pytools/blob/main/Literature_handling/OpenAlex_API.ipynb" (04.10.2023)
+auf Github hochgeladen am 29.04.2022 vom Account "University Library - University of Bern" -> Account-Adresse "https://github.com/ub-unibe-ch"
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Programmieren in Visual Studio Code:
+
+Erstelle ein neues Python-File
+->bspw. "openalex.py"
+Installiere via Terminal das Python-Modul "requests" 
+->pip3 install requests
+Installiere via Terminal das Python-Modul "pandas"
+->pip3 install pandas
+Importiere das Modul "requests" im Python-Script
+->import requests
+Importiere das Modul "json" im Python-Script
+->import json
+Importiere das Modul "pandas" als "pd" im Python-Script
+->import pandas as pd
+
+Füge E-Mail-Adresse hinzu für Identifikation als Mensch, um bessere Abfrageergebnisse zu erhalten->OpenAlex-Etikette
+->email = '...'
+(Teste auf Fehler im Script-> Run Python File)
+
+Stelle Anfrage an den OpenAlex-Server:
+Halte Einsicht in die API-Dokumentation des OpenAlex-Servers
+->https://docs.openalex.org/how-to-use-the-api/api-overview
+
+Halte Rückblick auf Beispiel-Anfragen mit Beispiel-Parametern
+->bspw. 'https://api.openalex.org/works/'
+
+Übernehme Beispiel-Anfrage als Anfrage für Python-Script als Variable base_url
+->bspw. base_url = "https://api.openalex.org/works/"
+
+Erstelle Parameter, um E-Mail-Adresse per mailto-Befehl zu senden als Variable params
+->bspw. params = {'mailto': email}
+Erstelle Parameter, um einzelnes Werk per DOI zu erhalten als Variable doi
+->bspw. doi = 'doi:https://doi.org/10.1007/s10479-016-2314-1'
+
+Erstelle die Anfrage an den OpenAlex-Server im Python-Script als Variable r
+r = requests.get(base_url + doi, params=params)
+
+Definiere Ergebnis als lesbares json-Format als Variable opa_data
+opa_data = r.json()
+Definiere Ergebnis als Type 
+bspw. type(opa_data)
+
+Definiere Ergebnis als Liste der verfügbaren Datenfelder als Variable l
+bspw. l = list(opa_data)
+Gebe Liste als Variable l aus, um verfügbare Datenfelder zu identifizieren
+print(l)
+Der Output ergibt bspw. folgende Liste:
+['id', 'doi', 'title', 'display_name', 'publication_year', 'publication_date', 'ids', 'language', 'primary_location', 'type', 'type_crossref', 'open_access', 'authorships', 'countries_distinct_count', 'institutions_distinct_count', 'corresponding_author_ids', 'corresponding_institution_ids', 'apc_list', 'apc_paid', 'has_fulltext', 'fulltext_origin', 'cited_by_count', 'biblio', 'is_retracted', 'is_paratext', 'concepts', 'mesh', 'locations_count', 'locations', 'best_oa_location', 'sustainable_development_goals', 'grants', 'referenced_works_count', 'referenced_works', 'related_works', 'ngrams_url', 'abstract_inverted_index', 'cited_by_api_url', 'counts_by_year', 'updated_date', 'created_date']
+
+Definiere Ergebnis im einzelnen Datenfeld
+->bspw. print(opa_data['id']) oder print(opa_data['biblio']) etc.
